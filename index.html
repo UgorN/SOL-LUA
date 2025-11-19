@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sol e Lua: Nossa Jornada</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Cormorant+Garamond:wght@300;400;600&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: linear-gradient(to bottom, #0a0e27, #1a1f3a, #0f1629);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
+
+        /* --- EFEITOS --- */
+        .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+        .star { position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%; animation: twinkle 3s infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+        /* --- CAPA --- */
+        .cover {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1629 100%);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 1000; transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .cover.hidden { transform: translateY(-100%); }
+        .sun-moon-icon { animation: float 6s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+        /* --- BOTÕES --- */
+        .celestial-btn {
+            background: linear-gradient(135deg, #d4af37 0%, #f4e5c3 50%, #d4af37 100%);
+            color: #0a0e27; padding: 16px 40px; border: none; border-radius: 50px;
+            font-size: 20px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3); z-index: 10; letter-spacing: 1px;
+        }
+        .celestial-btn:hover { transform: scale(1.05); box-shadow: 0 6px 30px rgba(212, 175, 55, 0.5); }
+        
+        .celestial-btn-silver {
+            background: linear-gradient(135deg, #c0c0c0 0%, #e0e0e0 50%, #a0a0a0 100%);
+            box-shadow: 0 4px 20px rgba(192, 192, 192, 0.3);
+        }
+
+        /* --- GALERIAS --- */
+        .timeline-card {
+            backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px; overflow: hidden; margin-bottom: 5rem; padding: 40px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .text-content {
+            font-size: 1.25rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.95);
+            text-align: left;
+            margin-bottom: 2rem;
+            white-space: pre-line;
+        }
+
+        .photo-grid-large {
+            display: grid; gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+        .photo-grid-large img {
+            width: 100%; height: 500px; object-fit: cover; border-radius: 12px;
+            transition: transform 0.4s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .photo-grid-large img:hover { transform: scale(1.02); }
+
+        /* --- MULTIVERSO (NOVO) --- */
+        .multiverse-section {
+            background: radial-gradient(circle at center, rgba(88, 28, 135, 0.4), transparent);
+            border-radius: 30px; padding: 60px 30px; margin: 80px 0;
+            border: 1px solid rgba(147, 51, 234, 0.3);
+        }
+        .art-card img {
+            width: 100%; height: 450px;
+            object-fit: cover; border-radius: 15px;
+            border: 1px solid rgba(216, 180, 254, 0.3);
+            transition: transform 0.4s ease;
+        }
+        .art-card img:hover { transform: scale(1.03); z-index: 10; }
+        .art-card-hero img { height: 600px; }
+
+        /* --- INTERAÇÃO FINAL --- */
+        .mystery-glow {
+            width: 120px; height: 120px; background: radial-gradient(circle, #f4e5c3, #d4af37);
+            border-radius: 50%; animation: pulse 2s ease-in-out infinite; cursor: pointer;
+            position: relative; box-shadow: 0 0 60px rgba(212, 175, 55, 0.6); margin: 0 auto;
+        }
+        .mystery-glow::before {
+            content: '✨'; position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); font-size: 48px;
+        }
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } }
+        
+        .fade-in { animation: fadeIn 1.5s ease-in forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .explosion {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: radial-gradient(circle, #fffbe6, #d4af37); z-index: 9999;
+            animation: explode 2.5s ease-out forwards; pointer-events: none;
+        }
+        @keyframes explode { 0% { opacity: 0; transform: scale(0); } 10% { opacity: 1; transform: scale(1); } 80% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.5); } }
+        .particle {
+            position: fixed; width: 8px; height: 8px; background: #f4e5c3;
+            border-radius: 50%; pointer-events: none; z-index: 9999;
+        }
+        .hidden-element { display: none; }
+        .content-wrapper { position: relative; z-index: 2; }
+    </style>
+</head>
+<body>
+    <div class="stars" id="starsContainer"></div>
+    <audio id="backgroundMusic" src="musica.mp3" loop></audio>
+
+    <div class="cover" id="cover">
+        <div class="text-center mb-10">
+            <svg class="sun-moon-icon w-32 h-32 mx-auto mb-6" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <path d="M140,100 A50,50 0 1,1 60,60 A40,40 0 1,0 140,100 Z" fill="#c0c0c0" filter="drop-shadow(0 0 10px rgba(255,255,255,0.5))"/>
+                <circle cx="160" cy="40" r="30" fill="#d4af37" opacity="0.8" filter="drop-shadow(0 0 15px #d4af37)"/>
+            </svg>
+            <h1 class="text-5xl font-serif italic text-amber-100 mb-2">Nossa História...</h1>
+            <p class="text-lg opacity-70">O encontro perfeito entre o Sol e a Lua</p>
+        </div>
+        <button class="celestial-btn" onclick="startJourney()">Iniciar Nossa Jornada</button>
+    </div>
+
+    <div class="content-wrapper">
+        <section class="min-h-[50vh] flex items-center justify-center px-4 pt-20 pb-10">
+            <div class="text-center max-w-4xl">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-200 bg-clip-text text-transparent">
+                    Do Início ao Infinito
+                </h1>
+                <p class="text-2xl opacity-90 font-light">
+                    "Você faz a maré do meu coração se movimentar."
+                </p>
+            </div>
+        </section>
+
+        <section class="py-10 px-4 max-w-6xl mx-auto">
+            
+            <div class="timeline-card border-amber-500/30">
+                <h3 class="text-4xl text-amber-300 mb-6 border-b border-amber-500/30 pb-4">O Renascimento</h3>
+                <div class="text-content">
+                    Antes de você, eu tinha desistido do amor. Eu não acreditava que iria encontrar alguém que fizesse meu coração se sentir aceso novamente. 
+                    Apesar de a lua ser um corpo frio que, em tese, não emite calor, <strong>você foi quem trouxe esse calor para o meu peito novamente.</strong>
+                    Você me fez enxergar calmaria onde eu só tinha caos. Você me fez ter segurança onde eu só tinha medo. Você me trouxe paz, onde eu só tinha guerra.
+                </div>
+                <div class="photo-grid-large">
+                    <img src="foto 01.jpg" onerror="tryFix(this)" alt="Foto 1">
+                    <img src="foto 02.jpg" onerror="tryFix(this)" alt="Foto 2">
+                    <img src="foto 03.jpg" onerror="tryFix(this)" alt="Foto 3"> 
+                </div>
+            </div>
+
+            <div class="timeline-card border-gray-400/30">
+                <h3 class="text-4xl text-gray-300 mb-6 border-b border-gray-400/30 pb-4">O Cuidado Incondicional</h3>
+                <div class="text-content">
+                    Mesmo no início do nosso relacionamento, quando eu ainda não conseguia me desprender das amarras, quando eu ainda estava mais frio e não sabia me declarar direito para você... <strong>você não desistiu de mim.</strong>
+                    Você continuou persistindo. Você continuou me amando. Você continuou cuidando de mim como ninguém nunca cuidou. E é exatamente essa persistência que me faz ter a certeza de que você merece me ter por inteiro.
+                </div>
+                <div class="photo-grid-large">
+                    <img src="foto 05.jpg" onerror="tryFix(this)" alt="Foto 5">
+                    <img src="foto 06.jpg" onerror="tryFix(this)" alt="Foto 6">
+                </div>
+            </div>
+
+            <div class="timeline-card border-amber-500/30">
+                <h3 class="text-4xl text-amber-300 mb-6 border-b border-amber-500/30 pb-4">A Mulher Apaixonante</h3>
+                <div class="text-content">
+                    Eu sinto em você o desejo de conquistar. Sinto em você a vontade de conseguir tudo que a gente almeja. Você me dá força e me transmite uma energia linda.
+                    Você tem um coração tão perfeito que não é à toa que toda minha família te ama. Não é à toa que sua sogra te ama, que seus cunhados te amam.
+                    Até hoje eu me pergunto: como é possível que qualquer pessoa que passou pela sua vida não tenha se apaixonado? <strong>Pois você é a pessoa mais apaixonante por quem eu já passei na vida, e por quem eu vou passar.</strong>
+                </div>
+                <div class="photo-grid-large">
+                    <img src="foto 07.jpg" onerror="tryFix(this)" alt="Foto 7">
+                    <img src="foto 08.jpg" onerror="tryFix(this)" alt="Foto 8">
+                    <img src="foto 09.jpeg" onerror="tryFix(this)" alt="Foto 9">
+                </div>
+            </div>
+
+            <div class="timeline-card border-gray-400/30">
+                <h3 class="text-4xl text-gray-300 mb-6 border-b border-gray-400/30 pb-4">Minha Escolha Eterna</h3>
+                <div class="text-content">
+                    Existe um Thiago antes da Carol e existe o Thiago depois.
+                    Eu sei que você merece me ter como seu homem. Saber que você merece me ter como seu futuro marido. E eu sei que você será uma excelente mãe para o nosso filho.
+                    Eu te amo muito. Você é minha melhor amiga. Você é minha mulher, minha namorada, minha noiva e minha esposa. Você vai ser tudo para sempre e eu quero dividir a vida contigo.
+                    Obrigado por me fazer sentir esse amor e me sentir vivo. A minha luz, meu guia. <strong>Você é, definitivamente, a minha Lua: quem faz a maré do meu coração se movimentar, balançar e, ao mesmo tempo, se acalmar.</strong>
+                </div>
+                <div class="photo-grid-large">
+                    <img src="foto 10.jpg" onerror="tryFix(this)" alt="Foto 10">
+                    <img src="foto 11.jpg" onerror="tryFix(this)" alt="Foto 11">
+                    <img src="foto 12.jpg" onerror="tryFix(this)" alt="Foto 12">
+                    <img src="foto 13.jpg" onerror="tryFix(this)" alt="Foto 13">
+                </div>
+            </div>
+        </section>
+
+        <section class="px-4 max-w-7xl mx-auto">
+            <div class="multiverse-section text-center">
+                <h2 class="text-5xl md:text-6xl font-bold mb-6 text-purple-300">Em Todos os Universos</h2>
+                
+                <p class="text-xl md:text-2xl mb-12 opacity-90 italic max-w-4xl mx-auto leading-relaxed font-light">
+                    "Minha alma está destinada a encontrar a sua, não importa o tempo ou a dimensão. Seja em forma física ou espiritual, eu acredito que você sempre será a minha peça que falta."
+                </p>
+                
+                <div class="mb-12 art-card art-card-hero px-4">
+                    <p class="text-left text-purple-200 text-3xl mb-4 font-bold">A Conexão de Almas</p>
+                    <p class="text-left text-lg mb-6 opacity-80">
+                        Dizem que o universo é infinito, mas a minha busca sempre tem o mesmo fim: você. Por isso gostamos de brincar de criar nossas versões em todos os mundos da ficção e da arte...
+                    </p>
+                    <img src="foto arte 01.jpg" onerror="tryFix(this)" alt="Arte Principal">
+                </div>
+
+                <div class="mb-12 px-4">
+                    <p class="text-left text-purple-200 text-3xl mb-4 font-bold">Nossas Versões</p>
+                    <p class="text-left text-lg mb-6 opacity-80">
+                        O motivo é simples: <strong>nós somos perfeitos em qualquer lugar que estivermos.</strong> Seja lutando batalhas épicas ou apenas existindo em um traço de desenho, nossa sintonia transcende a realidade.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="art-card"><img src="foto arte 02.jpg" onerror="tryFix(this)"></div>
+                        <div class="art-card"><img src="foto arte 03.jpg" onerror="tryFix(this)"></div>
+                        <div class="art-card"><img src="foto arte 04.jpg" onerror="tryFix(this)"></div>
+                        <div class="art-card"><img src="foto arte 05.jpg" onerror="tryFix(this)"></div>
+                    </div>
+                </div>
+
+                <div class="px-4">
+                    <p class="text-left text-purple-200 text-3xl mb-4 font-bold">A Verdade Universal</p>
+                    <p class="text-left text-lg mb-6 opacity-80">
+                        Todo universo onde eu puder te encontrar, eu vou te encontrar. Porque, independente de onde estivermos, sempre seremos o melhor casal que existe.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                         <div class="art-card"><img src="foto arte 06.jpg" onerror="tryFix(this)"></div>
+                         <div class="art-card"><img src="foto arte 07.jpg" onerror="tryFix(this)"></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="min-h-[90vh] flex flex-col items-center justify-center px-4 py-20">
+            
+            <div id="mysteryGlow" class="text-center">
+                <div class="mystery-glow" onclick="revealQuestion()"></div>
+                <p class="text-3xl mt-8 opacity-80 italic font-light">Toque na luz...</p>
+            </div>
+
+            <div id="questionSection" class="hidden-element text-center w-full max-w-5xl">
+                <p class="text-2xl md:text-3xl mb-10 opacity-80 font-light leading-relaxed">
+                    Já viajamos pelo passado e por todos os universos possíveis.<br>
+                    Agora, só falta decidir o nosso futuro.
+                </p>
+
+                <h2 class="text-6xl md:text-8xl font-bold mb-16 bg-gradient-to-r from-amber-200 via-yellow-400 to-gray-300 bg-clip-text text-transparent drop-shadow-2xl">
+                    Quer namorar comigo?
+                </h2>
+                
+                <div id="responseButtons" class="flex flex-col md:flex-row gap-8 justify-center items-center">
+                    <button class="celestial-btn-silver celestial-btn text-2xl min-w-[250px] py-4" onclick="handleYes()">SIM</button>
+                    <button class="celestial-btn text-2xl min-w-[250px] py-4 animate-pulse" onclick="handleYes()">COM CERTEZA</button>
+                </div>
+
+                <div id="finalRedeemSection" class="hidden-element mt-12">
+                    <p class="text-3xl text-amber-200 mb-8 font-light italic">✨ Destino traçado com sucesso! ✨</p>
+                    <button class="celestial-btn text-2xl scale-110 py-5 px-10" onclick="redeemUnion()">🎁 Resgatar Item de União 🎁</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // SCRIPT DE CORREÇÃO AUTOMÁTICA DE IMAGENS
+        function tryFix(img) {
+            if (img.getAttribute('data-retried')) return;
+            img.setAttribute('data-retried', 'true');
+            const currentSrc = img.src;
+            
+            if (currentSrc.includes('.jpg')) {
+                img.src = currentSrc.replace('.jpg', '.png');
+            } else if (currentSrc.includes('.png')) {
+                img.src = currentSrc.replace('.png', '.jpeg');
+            } else if (currentSrc.includes('.jpeg')) {
+                 console.log('Arquivo não encontrado: ' + currentSrc);
+            }
+        }
+
+        // ESTRELAS
+        function createStars() {
+            const container = document.getElementById('starsContainer');
+            for(let i=0; i<150; i++){
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random()*100 + '%';
+                star.style.top = Math.random()*100 + '%';
+                star.style.animationDelay = Math.random()*3 + 's';
+                container.appendChild(star);
+            }
+        }
+
+        // UX
+        function startJourney() {
+            document.getElementById('cover').classList.add('hidden');
+            const music = document.getElementById('backgroundMusic');
+            music.volume = 0.5;
+            music.play().catch(e => console.log("Autoplay bloqueado"));
+        }
+
+        function revealQuestion() {
+            document.getElementById('mysteryGlow').style.display = 'none';
+            const qs = document.getElementById('questionSection');
+            qs.classList.remove('hidden-element');
+            qs.classList.add('fade-in');
+            qs.scrollIntoView({behavior: 'smooth'});
+        }
+
+        function handleYes() {
+            document.getElementById('responseButtons').style.display = 'none';
+            const final = document.getElementById('finalRedeemSection');
+            final.classList.remove('hidden-element');
+            final.classList.add('fade-in');
+        }
+
+        function redeemUnion() {
+            const explosion = document.createElement('div');
+            explosion.className = 'explosion';
+            document.body.appendChild(explosion);
+            for(let i=0; i<100; i++){
+                setTimeout(() => {
+                    const p = document.createElement('div');
+                    p.className = 'particle';
+                    const x = window.innerWidth/2, y = window.innerHeight/2;
+                    p.style.left = x+'px'; p.style.top = y+'px';
+                    document.body.appendChild(p);
+                    const angle = Math.random() * Math.PI * 2;
+                    const dist = 200 + Math.random()*500;
+                    p.animate([{transform: `translate(0,0)`, opacity:1},{transform: `translate(${Math.cos(angle)*dist}px, ${Math.sin(angle)*dist}px)`, opacity:0}], {duration: 1500, easing: 'ease-out'});
+                    setTimeout(()=>p.remove(), 1500);
+                }, i*5);
+            }
+            setTimeout(() => explosion.remove(), 3000);
+            console.log("HORA DO SHOW! Puxe o colar AGORA!");
+        }
+
+        createStars();
+    </script>
+</body>
+</html>
